@@ -23,7 +23,7 @@ DISK_THRESHOLD=90          # percent
 LOAD_THRESHOLD=4.0         # 1-min load average (adjust for core count)
 SERVICES_TO_CHECK=("sshd" "cron" "nginx" "docker")   # edit as needed
 LOG_FILE="/var/log/server-health-check.log"
-ALERT_EMAIL=""             # set an email to enable mail alerts, e.g. "admin@example.com"
+ALERT_EMAIL="hampannagouda18@gmail.com"             # set an email to enable mail alerts, e.g. "admin@example.com"
 VERBOSE=false
 
 [[ "${1:-}" == "--verbose" ]] && VERBOSE=true
