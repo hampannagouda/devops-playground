@@ -1,0 +1,74 @@
+pipeline {
+    agent any
+
+    environment {
+        NODE_ENV = 'production'
+        APP_NAME = 'my-node-app'
+    }
+
+    options {
+        timestamps()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/hampannagouda/appu-chat-center'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+
+        stage('Lint') {
+            steps {
+                sh 'npm run lint'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'npm test -- --coverage'
+            }
+            post {
+                always {
+                    junit 'test-results/*.xml'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Deplying ${APP_NAME} to production..."
+                sh './deploy.sh'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            mail to: 'hampannagouda18@gmail.com',
+                 subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                 body: "Check console output at ${env.BUILD_URL}"
+        }
+        always {
+            cleanWs()
+        }
+    }
+}
