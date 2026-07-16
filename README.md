@@ -115,7 +115,3 @@ Navigate to the desired script directory and execute the scripts in a Linux shel
 Aspiring DevOps & Cloud Engineer
 
 Building practical expertise in Linux, Automation, Cloud, and DevOps technologies through hands-on projects and scripting exercises.
-
-## License
-
-This project is licensed under the MIT License.
